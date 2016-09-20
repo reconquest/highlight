@@ -1,0 +1,225 @@
+#!/bin/bash
+
+:usage() {
+    cat <<HELP
+Usage:
+    highlight <option>...
+    highlight -h | --help
+
+Options:
+    reset
+    bold
+    dim
+    underline
+    blink
+    reverse
+    hidden
+    fg default
+    fg black
+    fg black
+    fg red
+    fg green
+    fg yellow
+    fg blue
+    fg magenta
+    fg cyan
+    fg light_gray
+    fg dark_gray
+    fg light_red
+    fg light_green
+    fg light_yellow
+    fg light_blue
+    fg light_magenta
+    fg light_cyan
+    fg white
+    bg default
+    bg black
+    bg black
+    bg red
+    bg green
+    bg yellow
+    bg blue
+    bg magenta
+    bg cyan
+    bg light_gray
+    bg dark_gray
+    bg light_red
+    bg light_green
+    bg light_yellow
+    bg light_blue
+    bg light_magenta
+    bg light_cyan
+    bg white
+HELP
+}
+
+:main() {
+    typeset -a attributes
+
+    if [[ "$#" -eq 0 ]]; then
+        :usage
+        exit 1
+    fi
+
+    while [[ "$#" -ne 0 ]]; do
+        local option="$1"
+        shift
+
+        case "$option" in
+        "-h"|"--help")
+            :usage
+            exit 0
+            ;;
+        "reset")
+            attributes+=("0")
+            ;;
+
+        "bold")
+            attributes=("1")
+            ;;
+
+        "dim")
+            attributes+=("2")
+            ;;
+
+        "underline")
+            attributes+=("4")
+            ;;
+
+        "blink")
+            attributes+=("5")
+            ;;
+
+        "reverse")
+            attributes+=("7")
+            ;;
+
+        "hidden")
+            attributes+=("8")
+            ;;
+
+        "fg")
+            local next="$1"
+            shift
+
+            case "$next" in
+            "default")
+                attributes+=("39")
+                ;;
+            "black")
+                attributes+=("30")
+                ;;
+            "red")
+                attributes+=("31")
+                ;;
+            "green")
+                attributes+=("32")
+                ;;
+            "yellow")
+                attributes+=("33")
+                ;;
+            "blue")
+                attributes+=("34")
+                ;;
+            "magenta")
+                attributes+=("35")
+                ;;
+            "cyan")
+                attributes+=("36")
+                ;;
+            "light_gray")
+                attributes+=("37")
+                ;;
+            "dark_gray")
+                attributes+=("90")
+                ;;
+            "light_red")
+                attributes+=("91")
+                ;;
+            "light_green")
+                attributes+=("92")
+                ;;
+            "light_yellow")
+                attributes+=("93")
+                ;;
+            "light_blue")
+                attributes+=("94")
+                ;;
+            "light_magenta")
+                attributes+=("95")
+                ;;
+            "light_cyan")
+                attributes+=("96")
+                ;;
+            "white")
+                attributes+=("97")
+                ;;
+            esac
+            ;;
+
+        "bg")
+            local next="$1"
+            shift
+
+            case "$next" in
+            "default")
+                attributes+=("49")
+                ;;
+            "black")
+                attributes+=("40")
+                ;;
+            "red")
+                attributes+=("41")
+                ;;
+            "green")
+                attributes+=("42")
+                ;;
+            "yellow")
+                attributes+=("43")
+                ;;
+            "blue")
+                attributes+=("44")
+                ;;
+            "magenta")
+                attributes+=("45")
+                ;;
+            "cyan")
+                attributes+=("46")
+                ;;
+            "light_gray")
+                attributes+=("47")
+                ;;
+            "dark_gray")
+                attributes+=("100")
+                ;;
+            "light_red")
+                attributes+=("101")
+                ;;
+            "light_green")
+                attributes+=("102")
+                ;;
+            "light_yellow")
+                attributes+=("103")
+                ;;
+            "light_blue")
+                attributes+=("104")
+                ;;
+            "light_magenta")
+                attributes+=("105")
+                ;;
+            "light_cyan")
+                attributes+=("106")
+                ;;
+            "white")
+                attributes+=("107")
+                ;;
+            esac
+        esac
+    done
+
+    local code
+    code=$(IFS=';'; echo "${attributes[*]}")
+    echo -e "\e[${code}m"
+}
+
+:main "$@"
