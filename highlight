@@ -217,9 +217,9 @@ HELP
         esac
     done
 
-    local code
-    code=$(IFS=';'; echo "${attributes[*]}")
-    echo -e "\e[${code}m"
+    local code=$(IFS=';'; printf "${attributes[*]}")
+
+    printf "\e[${code}m"
 }
 
 :main "$@"
